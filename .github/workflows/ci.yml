@@ -1,4 +1,4 @@
-name: vECU CI Pipeline
+name: vECU CI/CD Pipeline
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,3 +29,17 @@ jobs:
           output=$(./vecu 120)
           echo "$output"
           echo "$output" | grep "Overspeed Detected"
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: vecu-binary
+          path: vecu
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Simulate Deployment
+        run: echo "Deploying vECU to Cloud Environment..."
