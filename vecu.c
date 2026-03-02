@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SPEED_LIMIT 120
+#define SPEED_LIMIT 80
 
 int main(int argc, char *argv[])
 {
