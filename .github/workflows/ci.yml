@@ -4,26 +4,28 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Install GCC
         run: sudo apt-get update && sudo apt-get install -y build-essential
 
-      - name: Compile vECU
+      - name: Compile
         run: gcc vecu.c -o vecu
 
-      - name: Run Test - Safe Speed
-        run: ./vecu 80
+      - name: Test Safe Speed
+        run: |
+          output=$(./vecu 80)
+          echo "$output"
+          echo "$output" | grep "Within Safe Limit"
 
-      - name: Run Test - Overspeed
-        run: ./vecu 120
+      - name: Test Overspeed
+        run: |
+          output=$(./vecu 120)
+          echo "$output"
+          echo "$output" | grep "Overspeed Detected"
